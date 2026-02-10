@@ -145,6 +145,51 @@ uv run python scripts/eval_from_generations.py run_name=test_hf_level_1 dataset_
 # If you like to speedup evaluation, you can use parallelize compilation on CPUs before getting to evaluation on GPUs
 # add build_cache=True and num_cpu_workers=<num_cpu_workers> to the command
 ```
+
+### Decouple Inference and Evaluation (Two-Machine Workflow)
+If you want to run inference on one machine and evaluate on another:
+
+```bash
+# -----------------------------
+# Machine A (inference only)
+# -----------------------------
+# Example: generate only level 2 problem 40 and save to runs/<run_name>
+uv run python scripts/generate_samples.py \
+  run_name=two_stage_l2_p40 \
+  dataset_src=local \
+  level=2 \
+  subset=40,40 \
+  num_samples=1 \
+  server_type=local \
+  model_name=deepseek-ai/DeepSeek-V3.2 \
+  backend=cuda
+
+# Transfer runs/<run_name> to Machine B
+# (use rsync/scp/tar, example with rsync)
+rsync -av runs/two_stage_l2_p40 <user>@<eval-machine>:/path/to/KernelBench/runs/
+```
+
+```bash
+# -----------------------------
+# Machine B (evaluation only)
+# -----------------------------
+uv run python scripts/eval_from_generations.py \
+  run_name=two_stage_l2_p40 \
+  dataset_src=local \
+  level=2 \
+  subset=40,40 \
+  num_samples_per_problem=1 \
+  backend=cuda \
+  precision=fp32 \
+  num_gpu_devices=1 \
+  timeout=300
+```
+
+Notes:
+- Inference machine only needs model/API access; evaluation machine only needs CUDA/PyTorch compile environment.
+- `eval_from_generations.py` reads generated kernels from `runs/<run_name>/..._kernel.py` directly and does not call LLM APIs.
+- For full-level runs, remove `subset=...` and increase worker counts as needed.
+
 ### Analyze the eval results to compute Benchmark Performance
 We provide `scripts/benchmark_eval_analysis.py` to analyze the eval results to compute success rate, timing metric, and overall benchmark performance  `fast_p`. 
 

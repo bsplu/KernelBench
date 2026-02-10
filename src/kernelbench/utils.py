@@ -32,16 +32,25 @@ from functools import cache
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 SGLANG_KEY = os.environ.get("SGLANG_API_KEY")
+SGLANG_ADDRESS = (
+    os.environ.get("SGLANG_API_ADDRESS")
+    or "localhost:30000"
+)
 
 
 ########################################################
 # Inference Helpers
 ########################################################
 
-def set_gpu_arch(arch_list: list[str]):
+def set_gpu_arch(arch_list: list[str] | str):
     """
     Set env variable for torch cuda arch list to build kernels for specified architectures
     """
+    # pydra CLI may pass scalar string (e.g., gpu_arch=Ampere); normalize to list.
+    if isinstance(arch_list, str):
+        # Support both single value ("Ampere") and comma-separated ("Ampere,Ada").
+        arch_list = [a.strip() for a in arch_list.split(",") if a.strip()]
+
     valid_archs = ["Maxwell", "Pascal", "Volta", "Turing", "Ampere", "Hopper", "Ada"]
     for arch in arch_list:
         if arch not in valid_archs:
@@ -57,8 +66,7 @@ def query_server(
     top_k: int = 50, 
     max_tokens: int = 128,  # max output tokens to generate
     num_completions: int = 1,
-    server_port: int = 30000,  # only for local server hosted on SGLang
-    server_address: str = "localhost",
+    server_address: str = SGLANG_ADDRESS,
     server_type: str = "sglang",
     model_name: str = "default",  # specify model type
 
@@ -72,32 +80,41 @@ def query_server(
     Done through liteLLM:
     - Local Server (SGLang, vLLM, Tokasaurus)
     """
+    # Accept address as:
+    # - host:port (e.g. localhost:30000)
+    # - http(s)://host:port
+    # - http(s)://host:port/v1
+    def _to_openai_base_url(addr: str) -> str:
+        addr = (addr or "").strip()
+        if not addr:
+            addr = "localhost:30000"
+        if not addr.startswith(("http://", "https://")):
+            addr = f"http://{addr}"
+        addr = addr.rstrip("/")
+        if addr.endswith("/v1"):
+            return addr
+        return f"{addr}/v1"
+
     # Local Server (SGLang, vLLM, Tokasaurus) - special handling
     if server_type == "local":
-        url = f"http://{server_address}:{server_port}"
+        base_url = _to_openai_base_url(server_address)
         client = OpenAI(
-            api_key=SGLANG_KEY, base_url=f"{url}/v1", timeout=None, max_retries=0
+            api_key=SGLANG_KEY, base_url=base_url, timeout=None, max_retries=0
         )
         if isinstance(prompt, str):
-            response = client.completions.create(
-                model="default",
-                prompt=prompt,
-                temperature=temperature,
-                n=num_completions,
-                max_tokens=max_tokens,
-                top_p=top_p,
-            )
-            outputs = [choice.text for choice in response.choices]
+            messages = [{"role": "user", "content": prompt}]
         else:
-            response = client.chat.completions.create(
-                model="default",
-                messages=prompt,
-                temperature=temperature,
-                n=num_completions,
-                max_tokens=max_tokens,
-                top_p=top_p,
-            )
-            outputs = [choice.message.content for choice in response.choices]
+            messages = prompt
+
+        response = client.chat.completions.create(
+            model=model_name,
+            messages=messages,
+            temperature=temperature,
+            n=num_completions,
+            max_tokens=max_tokens,
+            top_p=top_p,
+        )
+        outputs = [choice.message.content for choice in response.choices]
         
         # output processing
         if len(outputs) == 1:
@@ -189,8 +206,7 @@ SERVER_PRESETS = {
     },
     "local": {  # this is for running locally (SGLang, vLLM, Tokasaurus), mostly for Llama
         "temperature": 0.8, # human eval pass@N temperature
-        "server_port": 10210,
-        "server_address": "matx2.stanford.edu",
+        "server_address": SGLANG_ADDRESS,
         "max_tokens": 8192,
     },
     "anthropic": {  # for Claude 3.7 Sonnet
@@ -230,6 +246,9 @@ def create_inference_server_from_presets(server_type: str = None,
         
         if kwargs:
             filtered_kwargs = {k: v for k, v in kwargs.items() if v is not None and v != "None"}
+            if "server_port" in filtered_kwargs:
+                print("Warning: 'server_port' is deprecated and ignored. Use 'server_address' with host:port.")
+                filtered_kwargs.pop("server_port")
             server_args.update(filtered_kwargs)
         
         if greedy_sample:

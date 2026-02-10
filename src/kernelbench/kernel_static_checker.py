@@ -35,6 +35,18 @@ def _strip_comments(code: str) -> str:
     return '\n'.join(lines)
 
 
+def _strip_string_literals(code: str) -> str:
+    """Remove common Python/C/C++ string literals to reduce regex false positives."""
+    # Triple-quoted Python strings/docstrings
+    code = re.sub(r'"""[\s\S]*?"""', '""', code)
+    code = re.sub(r"'''[\s\S]*?'''", "''", code)
+    # Double-quoted strings with escaped quotes
+    code = re.sub(r'"(?:\\.|[^"\\])*"', '""', code)
+    # Single-quoted strings with escaped quotes
+    code = re.sub(r"'(?:\\.|[^'\\])*'", "''", code)
+    return code
+
+
 # =============================================================================
 # BYPASS CHECKS - Strictly Prohibited 
 # some of this is from Kevin RL Paper (arxiv:2507.11948)
@@ -59,7 +71,7 @@ def check_code_bypass(code: str) -> Tuple[bool, str]:
        effectively calling parent implementation.
         Uses word boundary for 'pass' to avoid matching 'passed', 'bypass', etc.
     """
-    code = _strip_comments(code)
+    code = _strip_string_literals(_strip_comments(code))
     
     # Check for try-except fallback
     for pattern in TRY_EXCEPT_PATTERNS:

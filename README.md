@@ -95,6 +95,7 @@ uv run python scripts/<script_name>.py ...
 You can still use `conda (python=3.10)` to create your environment and install dependencies with `requirements.txt`.
 
 We use `litellm` for API calls. Please set your keys by creating a `.env` following our `.env.example`.
+For local SGLang/vLLM/Tokasaurus endpoints, set `SGLANG_API_KEY` and `SGLANG_API_ADDRESS` in `.env` (example: `localhost:30000` or `http://localhost:30000`).
 
 Running and profiling kernels require a GPU.
 If you don't have a GPU available locally, you can set up [Modal](https://modal.com/) for cloud serverless GPU evaluation. Set up your modal token after creating an account by running `modal token new`. Then, use the `generate_and_eval_single_sample_modal.py` script.
@@ -108,10 +109,18 @@ It is easier to get started with a single problem. This will fetch the problem, 
 ```bash
 # for example, run level 2 problem 40 from huggingface and use google gemini 2.5 flash for generation
 
-uv run python scripts/generate_and_eval_single_sample.py dataset_src=huggingface level=2 problem_id=40 server_type=google model_name=gemini/gemini-2.5-flash
+uv run python scripts/generate_and_eval_single_sample.py dataset_src=huggingface level=2 problem_id=40 server_type=google model_name=gemini/gemini-2.5-flash backend=cuda
 
 # dataset_src could be "local" or "huggingface"
 # add .verbose_logging for more visbility
+```
+
+For single-sample runs, explicitly set `backend` (for example `backend=cuda`, `backend=triton`, `backend=tilelang`).
+
+To persist generation/eval artifacts to `results/eval_logs`, enable logging flags:
+
+```bash
+uv run python scripts/generate_and_eval_single_sample.py ... log=true log_generated_kernel=true log_eval_result=true
 ```
 
 **What you might need to modify**

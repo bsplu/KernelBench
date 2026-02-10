@@ -226,13 +226,33 @@ def main(config: EvalConfig):
             f.write(custom_prompt)
 
     # Query server with constructed prompt
-    custom_kernel = inference_server(custom_prompt)
-    custom_kernel = extract_first_code(custom_kernel, ["python", "cpp"])
+    custom_kernel_raw = inference_server(custom_prompt)
+    custom_kernel = extract_first_code(custom_kernel_raw, ["python", "cpp"])
+
+    def _write_debug_outputs(reason: str):
+        os.makedirs(config.logdir, exist_ok=True)
+        with open(
+            os.path.join(
+                config.logdir,
+                f"raw_generation_level_{config.level}_problem_{config.problem_id}.txt",
+            ),
+            "w",
+        ) as f:
+            f.write(custom_kernel_raw if isinstance(custom_kernel_raw, str) else str(custom_kernel_raw))
+        with open(
+            os.path.join(
+                config.logdir,
+                f"extracted_kernel_level_{config.level}_problem_{config.problem_id}.py",
+            ),
+            "w",
+        ) as f:
+            f.write(custom_kernel if isinstance(custom_kernel, str) else "")
+        print(f"[Debug] Saved generation artifacts to {config.logdir} (reason: {reason})")
 
     # check LLM is able to generate custom kernel code
-    assert (
-        custom_kernel is not None
-    ), f"Custom {config.backend} kernel code generation failed"
+    if custom_kernel is None:
+        _write_debug_outputs("extract_first_code returned None")
+        raise AssertionError(f"Custom {config.backend} kernel code generation failed")
 
     # Optional: static code checker for kernel code using regex matching
     # NOTE: by no means is this checker complete, but it could help catch some potential hacks
@@ -243,9 +263,16 @@ def main(config: EvalConfig):
             backend=config.backend,
             precision=config.precision,
         )
-        assert static_check_status, f"Static check failed for level {config.level} problem {config.problem_id}. Errors: {errors}. Warnings: {warnings}"
+        if not static_check_status:
+            _write_debug_outputs("static check failed")
+            raise AssertionError(
+                f"Static check failed for level {config.level} problem {config.problem_id}. Errors: {errors}. Warnings: {warnings}"
+            )
         if warnings:
             print(f"Static check warnings for level {config.level} problem {config.problem_id}: {warnings}")
+
+    if config.log_generated_kernel:
+        _write_debug_outputs("log_generated_kernel enabled")
 
     # this should be optional
     if config.log:

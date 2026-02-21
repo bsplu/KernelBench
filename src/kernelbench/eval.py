@@ -100,6 +100,45 @@ def get_tolerance_for_precision(precision: str | torch.dtype) -> float:
     }
     assert precision in PRECISION_TOLERANCES, f"Invalid precision not supported: {precision}"
     return PRECISION_TOLERANCES[precision]
+
+
+def _chunked_allclose_and_diff(
+    output: torch.Tensor,
+    output_new: torch.Tensor,
+    atol: float,
+    rtol: float,
+    chunk_numel: int = 1_000_000,
+) -> tuple[bool, float, float]:
+    """
+    Compare tensors in chunks to reduce peak memory usage during correctness checks.
+    Returns (is_allclose, max_abs_diff, avg_abs_diff).
+    """
+    flat_output = output.reshape(-1)
+    flat_output_new = output_new.reshape(-1)
+    numel = flat_output.numel()
+    if numel == 0:
+        return True, 0.0, 0.0
+
+    is_allclose = True
+    max_abs_diff = 0.0
+    abs_diff_sum = 0.0
+
+    for start in range(0, numel, chunk_numel):
+        end = min(start + chunk_numel, numel)
+        out_chunk = flat_output[start:end]
+        out_new_chunk = flat_output_new[start:end]
+
+        if not torch.allclose(out_chunk, out_new_chunk, atol=atol, rtol=rtol):
+            is_allclose = False
+
+        abs_diff = torch.abs(out_chunk - out_new_chunk)
+        chunk_max = abs_diff.max().item() if abs_diff.numel() > 0 else 0.0
+        if chunk_max > max_abs_diff:
+            max_abs_diff = chunk_max
+        abs_diff_sum += abs_diff.sum().item()
+
+    avg_abs_diff = abs_diff_sum / numel
+    return is_allclose, max_abs_diff, avg_abs_diff
     
 
 class KernelExecResult(BaseModel):
@@ -797,11 +836,13 @@ def run_and_check_correctness(
                 # now we will return the tolerance from get_tolerance_for_precision
                 tolerance = get_tolerance_for_precision(precision)
                 # check output value difference
-                if not torch.allclose(
-                    output, output_new, atol=tolerance, rtol=tolerance
-                ):  # fail
-                    max_diff = torch.max(torch.abs(output - output_new)).item()
-                    avg_diff = torch.mean(torch.abs(output - output_new)).item()
+                allclose_ok, max_diff, avg_diff = _chunked_allclose_and_diff(
+                    output,
+                    output_new,
+                    atol=tolerance,
+                    rtol=tolerance,
+                )
+                if not allclose_ok:  # fail
                     metadata.setdefault("max_difference", []).append(f"{max_diff:.6f}")
                     metadata.setdefault("avg_difference", []).append(f"{avg_diff:.6f}")
                     metadata["correctness_issue"] = "Output mismatch"

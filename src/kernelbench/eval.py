@@ -512,9 +512,20 @@ def eval_kernel_against_ref(
         )
         # TODO: add metadata for compilation error (how to we get the compilation error message?)
 
-        if "lock" in str(e) or "No such file or directory" in str(e):
-            # this is a lock file error, likely due to concurrent compilation
-            # this does not necessarily mean the compilation failed, but we should retry
+        err_msg = str(e)
+        err_msg_lower = err_msg.lower()
+        lock_error_patterns = [
+            ".lock",
+            " lock file",
+            "filelock",
+            "fileexistserror",
+            "resource temporarily unavailable",
+        ]
+        is_lock_error = any(p in err_msg_lower for p in lock_error_patterns)
+
+        if is_lock_error:
+            # lock file error, likely due to concurrent compilation
+            # this may be transient; caller can retry
             print(
                 f"[Eval] Lock file error during compilation, Please retry. Error: {e}"
             )

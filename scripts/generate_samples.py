@@ -13,6 +13,7 @@ from kernelbench.prompt_constructor_toml import get_prompt_for_backend, get_cust
 from kernelbench.utils import (
     create_inference_server_from_presets,
     extract_first_code,
+    extract_last_code,
     maybe_multithread,
     set_gpu_arch,
 )
@@ -72,6 +73,7 @@ class GenerationConfig(Config):
 
         # Number of samples to generate per problem for pass@k analysis
         self.num_samples = 1  # Default to 1 sample per problem
+        self.generation_retries = 3  # retry model generation when code extraction fails
 
         self.log_prompt = False
 
@@ -138,11 +140,46 @@ def generate_sample_single(
         with open(prompt_path, "w") as f:
             f.write(custom_prompt)
 
-    # Query server with constructed prompt
-    custom_kernel = inference_server(custom_prompt)
-    custom_kernel = extract_first_code(custom_kernel, ["python", "cpp"])
+    # Query server with constructed prompt (with retries for extraction failures)
+    max_retries = getattr(config, "generation_retries", 3)
+    if isinstance(max_retries, str):
+        try:
+            max_retries = int(max_retries)
+        except ValueError:
+            max_retries = 3
+    max_retries = max(1, max_retries)
+
+    custom_kernel = None
+    last_generation = None
+    for attempt in range(1, max_retries + 1):
+        generation = inference_server(custom_prompt)
+        last_generation = generation
+
+        # First try first fenced code block, then last fenced block as fallback.
+        custom_kernel = extract_first_code(generation, ["python", "cpp"])
+        if custom_kernel is None:
+            custom_kernel = extract_last_code(generation, ["python", "cpp"])
+
+        # Some providers occasionally return plain code without ``` fences.
+        if custom_kernel is None and isinstance(generation, str):
+            candidate = generation.strip()
+            if any(marker in candidate for marker in ["class ModelNew", "load_inline", "__global__", "torch.utils.cpp_extension"]):
+                custom_kernel = candidate
+
+        if custom_kernel is not None:
+            break
+
+        if config.verbose:
+            print(
+                f"Code extraction failed for problem {work.problem_id} sample {work.sample_id} "
+                f"(attempt {attempt}/{max_retries}), retrying..."
+            )
+
     # check LLM is able to generate custom CUDA code
-    assert custom_kernel is not None, "Custom CUDA code generation failed"
+    assert custom_kernel is not None, (
+        f"Custom CUDA code generation failed after {max_retries} attempts; "
+        f"last output type={type(last_generation).__name__}"
+    )
 
     # Optional: we provide a static code checker for kernel code using regex matching
     # NOTE: by no means, is this checker complete, but it might could help catch some potential hacks and issues
@@ -153,13 +190,13 @@ def generate_sample_single(
             # uses the default set of forbidden and warning patterns, 
             # you could adapt the patterns to your own setting (degree of banning cuda stream, allowing some torch ops)
         )
-        assert static_check_status, f"Static check failed for sample {work.sample_id} for problem {problem_number}: {problem_name}. Error: {error}. Warnings: {warnings}"
+        assert static_check_status, f"Static check failed for sample {work.sample_id} for problem {work.problem_id}: {problem_name}. Error: {error}. Warnings: {warnings}"
         if warnings:
-            print(f"Static check warnings for sample {work.sample_id} for problem {problem_number}: {problem_name}. Warnings: {warnings}")
+            print(f"Static check warnings for sample {work.sample_id} for problem {work.problem_id}: {problem_name}. Warnings: {warnings}")
 
     if config.verbose:
         print(
-            f"Generated sample {work.sample_id} for problem {problem_number}: {problem_name}"
+            f"Generated sample {work.sample_id} for problem {work.problem_id}: {problem_name}"
         )
 
     # Store to local file

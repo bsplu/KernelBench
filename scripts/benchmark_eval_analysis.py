@@ -184,10 +184,13 @@ def analyze_greedy_eval(run_name, hardware, baseline, level,
             continue
             
         baseline_entry = baseline_results[f"level{level}"][problem_name]
-        
-        is_correct_list.append(eval_entry["correctness"])
-        actual_speed_list.append(eval_entry["runtime"])
-        baseline_speed_list.append(baseline_entry["mean"])
+        try:
+            is_correct_list.append(eval_entry["correctness"])
+            actual_speed_list.append(eval_entry["runtime"])
+            baseline_speed_list.append(baseline_entry["mean"])
+        except Exception as e:
+            print(f"Warning: Missing key {e} for problem {pid} in level {level}")
+            continue
 
     is_correct = np.array(is_correct_list)
     baseline_speed = np.array(baseline_speed_list)

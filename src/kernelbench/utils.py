@@ -38,6 +38,96 @@ SGLANG_ADDRESS = (
 )
 
 
+# def _maybe_debug_cot_payload(response, server_type: str, model_name: str):
+#     """
+#     Temporary debug hook: dump raw response payload to inspect potential CoT fields.
+#     Enable with env: KB_DEBUG_COT=1
+#     """
+#     flag = os.environ.get("KB_DEBUG_COT", "0").lower() in {"1", "true", "yes"}
+#     if not flag:
+#         return
+#     try:
+#         dump = None
+#         if hasattr(response, "model_dump"):
+#             dump = response.model_dump()
+#         elif hasattr(response, "dict"):
+#             dump = response.dict()
+#         else:
+#             dump = {"repr": repr(response)}
+
+#         os.makedirs("results/eval_logs", exist_ok=True)
+#         path = os.path.join("results/eval_logs", f"cot_debug_{os.getpid()}.log")
+#         with open(path, "a", encoding="utf-8") as f:
+#             f.write("\n" + "=" * 80 + "\n")
+#             f.write(f"server_type={server_type} model_name={model_name}\n")
+#             # quick signal checks for common reasoning/coT fields
+#             text = json.dumps(dump, ensure_ascii=False, default=str)
+#             markers = [
+#                 "reasoning_content",
+#                 "reasoning",
+#                 "reasoning_tokens",
+#                 "thought",
+#                 "thinking",
+#             ]
+#             found = [m for m in markers if m in text]
+#             f.write(f"cot_markers_found={found}\n")
+#             f.write(text + "\n")
+#     except Exception as e:
+#         print(f"[KB_DEBUG_COT] failed to dump payload: {e}")
+
+# def _extract_minimax_think(content: str) -> tuple[str | None, str]:
+#     """
+#     Extract Minimax-style CoT embedded in content:
+#     <think> ... </think>
+#     Returns (reasoning_text_or_none, content_without_think).
+#     """
+#     if not isinstance(content, str) or not content:
+#         return None, content
+#     m = re.search(r"<think>([\s\S]*?)</think>", content, re.IGNORECASE)
+#     if not m:
+#         return None, content
+#     reasoning = m.group(1).strip()
+#     final_content = re.sub(r"<think>[\s\S]*?</think>", "", content, flags=re.IGNORECASE).strip()
+#     return reasoning if reasoning else None, final_content
+
+
+# def _maybe_debug_minimax_cot(content: str, model_name: str, label: str = "single"):
+#     """
+#     Temporary debug helper for Minimax models whose CoT is embedded in `content`.
+#     Enable with KB_DEBUG_COT=1.
+#     """
+#     flag = os.environ.get("KB_DEBUG_COT", "0").lower() in {"1", "true", "yes"}
+#     if not flag:
+#         return
+#     if "minimax" not in (model_name or "").lower():
+#         return
+#     reasoning, final_content = _extract_minimax_think(content)
+#     if reasoning is None:
+#         return
+#     try:
+#         os.makedirs("results/eval_logs", exist_ok=True)
+#         path = os.path.join("results/eval_logs", f"cot_debug_{os.getpid()}.log")
+#         with open(path, "a", encoding="utf-8") as f:
+#             f.write("\n" + "-" * 80 + "\n")
+#             f.write(f"minimax_think_detected[{label}]=True\n")
+#             f.write(f"minimax_think_len={len(reasoning)}\n")
+#             f.write("minimax_think_excerpt:\n")
+#             f.write(reasoning[:2000] + "\n")
+#             f.write("minimax_final_content_excerpt:\n")
+#             f.write((final_content or "")[:1000] + "\n")
+#     except Exception as e:
+#         print(f"[KB_DEBUG_COT] failed to dump minimax think content: {e}")
+
+def _strip_think_block_from_content(content: str) -> str:
+    """
+    Remove <think>...</think> blocks from assistant content before returning to caller.
+    """
+    if not isinstance(content, str) or "<think>" not in content.lower():
+        return content
+    cleaned = re.sub(r"<think>[\s\S]*?</think>", "", content, flags=re.IGNORECASE).strip()
+    return cleaned
+
+
 ########################################################
 # Inference Helpers
 ########################################################
@@ -106,15 +196,33 @@ def query_server(
         else:
             messages = prompt
 
-        response = client.chat.completions.create(
-            model=model_name,
-            messages=messages,
-            temperature=temperature,
-            n=num_completions,
-            max_tokens=max_tokens,
-            top_p=top_p,
-        )
+        create_kwargs = {
+            "model": model_name,
+            "messages": messages,
+            "temperature": temperature,
+            "n": num_completions,
+            "max_tokens": max_tokens,
+            "top_p": top_p,
+        }
+        if is_reasoning_model:
+            model_name_l = (model_name or "").lower()
+            # DeepSeek-compatible thinking flags (matches curl payload style).
+            if "deepseek" in model_name_l:
+                create_kwargs["extra_body"] = {
+                    "chat_template_kwargs": {"enable_thinking": True, "thinking": True},
+                    "enable_thinking": True,
+                }
+
+            elif reasoning_effort:
+                # For OpenAI-style reasoning models where this field is accepted.
+                create_kwargs["reasoning_effort"] = reasoning_effort
+
+        response = client.chat.completions.create(**create_kwargs)
+        # _maybe_debug_cot_payload(response, server_type=server_type, model_name=model_name)
         outputs = [choice.message.content for choice in response.choices]
+        # for i, out in enumerate(outputs):
+        #     _maybe_debug_minimax_cot(out, model_name=model_name, label=f"local_choice_{i}")
+        outputs = [_strip_think_block_from_content(out) for out in outputs]
         
         # output processing
         if len(outputs) == 1:
@@ -159,6 +267,12 @@ def query_server(
             # Format: {"type": "enabled", "budget_tokens": <int>}
             if budget_tokens > 0 and "anthropic" in model_name.lower():
                 completion_kwargs["thinking"] = {"type": "enabled", "budget_tokens": budget_tokens}
+            elif "deepseek" in model_name.lower():
+                completion_kwargs["chat_template_kwargs"] = {"enable_thinking": True, 'thinking': True}
+                completion_kwargs["enable_thinking"] = True 
+                completion_kwargs["temperature"] = temperature      
+                completion_kwargs["top_p"] = top_p   
+                completion_kwargs["top_k"] = top_k      
         else:
             # Standard models support temperature and top_p
             completion_kwargs["temperature"] = temperature
@@ -169,18 +283,22 @@ def query_server(
                 completion_kwargs["top_k"] = top_k
         
         response = completion(**completion_kwargs)
+        # _maybe_debug_cot_payload(response, server_type=server_type, model_name=model_name)
         
         # output processing
         if num_completions == 1:
             content = response.choices[0].message.content
             if content is None:
                 raise ValueError(f"LLM returned None content for model {model_name}. finish_reason: {response.choices[0].finish_reason}")
-            return content
+            # _maybe_debug_minimax_cot(content, model_name=model_name, label="litellm_single")
+            return _strip_think_block_from_content(content)
         else:
             contents = [choice.message.content for choice in response.choices]
             if any(c is None for c in contents):
                 raise ValueError(f"LLM returned None content in one or more completions for model {model_name}")
-            return contents
+            # for i, content in enumerate(contents):
+            #     _maybe_debug_minimax_cot(content, model_name=model_name, label=f"litellm_choice_{i}")
+            return [_strip_think_block_from_content(content) for content in contents]
     except Exception as e:
         print(f"Error in query_server for model {model_name}: {e}")
         raise

@@ -20,6 +20,7 @@ Usage:
     will return a tuple (valid, errors, warnings) 
 """
 
+import ast
 import re
 from typing import List, Tuple, Dict, Any, Optional, Callable, Union
 
@@ -194,6 +195,102 @@ def check_cuda_impl(code: str) -> Tuple[bool, str]:
         return (True, "Missing __global__ kernel definition")
     if not any(p in code for p in CUDA_COMPILE_PATTERNS):
         return (True, "Missing load_inline or cpp_extension for compilation")
+    return (False, "")
+
+
+def _is_load_inline_call(node: ast.Call) -> bool:
+    """Return True if AST call targets load_inline."""
+    func = node.func
+    if isinstance(func, ast.Name):
+        return func.id == "load_inline"
+    if isinstance(func, ast.Attribute):
+        return func.attr == "load_inline"
+    return False
+
+
+def _const_string_value(node: ast.AST) -> Optional[str]:
+    """Best-effort extraction for string constants from AST."""
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return node.value
+    return None
+
+
+def _literal_has_functions_binding(node: ast.AST) -> bool:
+    """
+    Best-effort check whether functions=[...] is provided and non-empty.
+    For non-literal values, conservatively assume True.
+    """
+    if isinstance(node, (ast.List, ast.Tuple)):
+        return len(node.elts) > 0
+    if isinstance(node, ast.Constant):
+        if node.value is None:
+            return False
+        if isinstance(node.value, (list, tuple)):
+            return len(node.value) > 0
+        if isinstance(node.value, str):
+            return len(node.value.strip()) > 0
+        return bool(node.value)
+    # Unknown expression (variable/function call): treat as enabled
+    return True
+
+
+def check_pybind11_module_forbidden(code: str) -> Tuple[bool, str]:
+    """
+    Disallow manual PYBIND11_MODULE bindings for generated kernels.
+    KernelBench uses load_inline(functions=[...]) binding path; mixing bindings
+    commonly causes redefinition/binding conflicts.
+    """
+    code_no_comment = _strip_comments(code)
+    if re.search(r"\bPYBIND11_MODULE\s*\(", code_no_comment):
+        return (True, "Contains PYBIND11_MODULE (forbidden: use load_inline(functions=[...]) binding only)")
+    return (False, "")
+
+
+def check_cpp_sources_nonempty_with_functions(code: str) -> Tuple[bool, str]:
+    """
+    Enforce: when load_inline(..., functions=[...]) is used, cpp_sources must be present and non-empty.
+    """
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        # Let syntax/compile checks handle malformed code; skip this static rule.
+        return (False, "")
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call) or not _is_load_inline_call(node):
+            continue
+
+        kw: Dict[str, ast.AST] = {}
+        for k in node.keywords:
+            if k.arg is not None:
+                kw[k.arg] = k.value
+
+        if "functions" not in kw:
+            continue
+        if not _literal_has_functions_binding(kw["functions"]):
+            continue
+
+        if "cpp_sources" not in kw:
+            return (True, "load_inline with functions=[...] requires non-empty cpp_sources, but cpp_sources is missing")
+
+        cpp_src = kw["cpp_sources"]
+        cpp_literal = _const_string_value(cpp_src)
+        if cpp_literal is not None and cpp_literal.strip() == "":
+            return (True, "load_inline with functions=[...] has empty cpp_sources (must contain C++ declarations)")
+        if isinstance(cpp_src, ast.Constant) and cpp_src.value is None:
+            return (True, "load_inline with functions=[...] has cpp_sources=None (must be non-empty)")
+
+    return (False, "")
+
+
+def check_torch_check_python_misuse(code: str) -> Tuple[bool, str]:
+    """
+    TORCH_CHECK is a C++ macro and must not be executed in Python runtime code.
+    Detect textual TORCH_CHECK(...) outside comments/string literals.
+    """
+    stripped = _strip_string_literals(_strip_comments(code))
+    if re.search(r"\bTORCH_CHECK\s*\(", stripped):
+        return (True, "Uses TORCH_CHECK(...) in Python code path (must appear only inside cpp_sources/cuda_sources)")
     return (False, "")
 
 # <========= TRITON CHECKS =========>
@@ -567,6 +664,9 @@ CHECK_FUNCTIONS: Dict[str, Union[Callable[[str], Tuple[bool, str]], Callable[[st
     # Backend-specific implementation checks
     # should be strict
     "cuda_impl": check_cuda_impl,
+    "pybind11_module_forbidden": check_pybind11_module_forbidden,
+    "cpp_sources_nonempty_with_functions": check_cpp_sources_nonempty_with_functions,
+    "torch_check_python_misuse": check_torch_check_python_misuse,
     "triton_impl": check_triton_impl,
     "tk_impl": check_tk_impl,
     "cute_impl": check_cute_impl,
@@ -583,7 +683,10 @@ STRICT_CHECKS = [
     "code_bypass",
     "timing_event_patch",
     "thread_injection",  
-    "lazy_eval",         
+    "lazy_eval",
+    "pybind11_module_forbidden",
+    "cpp_sources_nonempty_with_functions",
+    "torch_check_python_misuse",
 ]
 
 # Backend-specific checks are added later at entry point

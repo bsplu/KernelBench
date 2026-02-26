@@ -118,6 +118,24 @@ GPU_SPEC_INFO = {
         "Maximum number of thread blocks per SM": "32",
         "Shared memory capacity per SM": "164 KB",
         "Maximum shared memory per thread block": "163 KB",
+    },
+    "A5000": {
+    "GPU Architecture": "Ampere",                                  
+    "GPU Memory": "24GB GDDR6 with ECC",                           
+    "Memory Bandwidth": "768 GB/s",                                
+    "FP32 TFLOPS": "27.8 TFLOPS",                                  
+    "TF32 Tensor Core TFLOPS": "222.2 TFLOPS (with sparsity)",     
+    "BFLOAT16 Tensor Core TFLOPS": "222.2 TFLOPS (with sparsity)", 
+    "FP16 Tensor Core TFLOPS": "222.2 TFLOPS (with sparsity)",     
+    "INT8 Tensor Core TOPS": "444.4 TOPS (with sparsity)",         
+    "CUDA Cores": "8,192",                                         
+    "Tensor Cores": "256",                                         
+    "RT Cores": "64",                                               
+    "Register File Size per SM": "64K 32-bit registers",           
+    "Maximum registers per thread": "255",                          
+    "Maximum number of thread blocks per SM": "16",                  
+    "Shared memory capacity per SM": "100 KB (configurable carve-out)",  
+    "Maximum shared memory per thread block": "99 KB (opt-in)",     
     }
 }
 

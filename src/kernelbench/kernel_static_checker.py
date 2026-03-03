@@ -293,6 +293,24 @@ def check_torch_check_python_misuse(code: str) -> Tuple[bool, str]:
         return (True, "Uses TORCH_CHECK(...) in Python code path (must appear only inside cpp_sources/cuda_sources)")
     return (False, "")
 
+
+def check_python_syntax_and_modelnew(code: str) -> Tuple[bool, str]:
+    """
+    Validate generated Python wrapper code is syntactically valid and defines ModelNew.
+    """
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return (True, "Syntax error in custom generated code or ModelNew not found")
+
+    has_model_new = any(
+        isinstance(node, ast.ClassDef) and node.name == "ModelNew"
+        for node in ast.walk(tree)
+    )
+    if not has_model_new:
+        return (True, "Syntax error in custom generated code or ModelNew not found")
+    return (False, "")
+
 # <========= TRITON CHECKS =========>
 # Rationale: Triton kernels are compiled from @triton.jit decorated functions.
 # They must use tl.* operations (tl.load, tl.store, etc.) for actual kernel work.
@@ -667,6 +685,7 @@ CHECK_FUNCTIONS: Dict[str, Union[Callable[[str], Tuple[bool, str]], Callable[[st
     "pybind11_module_forbidden": check_pybind11_module_forbidden,
     "cpp_sources_nonempty_with_functions": check_cpp_sources_nonempty_with_functions,
     "torch_check_python_misuse": check_torch_check_python_misuse,
+    "python_syntax_and_modelnew": check_python_syntax_and_modelnew,
     "triton_impl": check_triton_impl,
     "tk_impl": check_tk_impl,
     "cute_impl": check_cute_impl,
@@ -687,6 +706,7 @@ STRICT_CHECKS = [
     "pybind11_module_forbidden",
     "cpp_sources_nonempty_with_functions",
     "torch_check_python_misuse",
+    "python_syntax_and_modelnew",
 ]
 
 # Backend-specific checks are added later at entry point

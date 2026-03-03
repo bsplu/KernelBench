@@ -4,6 +4,21 @@ import numpy as np
 import time
 from typing import Any, Optional, Union
 import os
+import gc
+
+
+def _cleanup_cuda_after_timing(device: torch.device):
+    """
+    Best-effort cleanup between timing runs to reduce allocator fragmentation
+    and stale allocations across many baseline problems.
+    """
+    try:
+        gc.collect()
+        torch.cuda.synchronize(device=device)
+        torch.cuda.empty_cache()
+    except Exception:
+        # Cleanup should never break the timing flow.
+        pass
 
 
 def measure_ref_program_time(
@@ -38,77 +53,103 @@ def measure_ref_program_time(
         ref_arch_src, context
     )
 
-    try:
-        with torch.no_grad():
-            if isinstance(device, str):
-                device = torch.device(device)
-            elif isinstance(device, int):
-                device = torch.device(f"cuda:{device}")
-            torch.cuda.set_device(device)
+    # Retry with lighter profiling budgets when an OOM occurs.
+    attempt_budgets = [
+        (num_warmup, num_trials),
+        (min(num_warmup, 2), max(20, num_trials // 2)),
+        (1, max(10, num_trials // 4)),
+    ]
 
-            torch.cuda.synchronize(device=device)
-            set_seed(42)
-            inputs = get_inputs()
-            set_seed(42)
-            init_inputs = get_init_inputs()
+    if isinstance(device, str):
+        device = torch.device(device)
+    elif isinstance(device, int):
+        device = torch.device(f"cuda:{device}")
 
-            from kernelbench.eval import get_torch_dtype_from_string
-            if isinstance(precision, str):
-                precision_dtype = get_torch_dtype_from_string(precision)
-            else:
-                precision_dtype = precision
+    for attempt_idx, (attempt_warmup, attempt_trials) in enumerate(attempt_budgets):
+        model = None
+        inputs = None
+        init_inputs = None
+        try:
+            with torch.no_grad():
+                torch.cuda.set_device(device)
+                torch.cuda.synchronize(device=device)
 
+                set_seed(42)
+                inputs = get_inputs()
+                set_seed(42)
+                init_inputs = get_init_inputs()
 
-            # set model weights and inputs to specified precision
-            inputs = [
-                x.to(device=device, dtype=precision_dtype) if isinstance(x, torch.Tensor) else x
-                for x in inputs
-            ]
-            init_inputs = [
-                x.to(device=device, dtype=precision_dtype) if isinstance(x, torch.Tensor) else x
-                for x in init_inputs
-            ]
+                from kernelbench.eval import get_torch_dtype_from_string
+                if isinstance(precision, str):
+                    precision_dtype = get_torch_dtype_from_string(precision)
+                else:
+                    precision_dtype = precision
 
-            model = Model(*init_inputs)
-            model = model.to(device=device, dtype=precision_dtype)
+                # set model weights and inputs to specified precision
+                inputs = [
+                    x.to(device=device, dtype=precision_dtype) if isinstance(x, torch.Tensor) else x
+                    for x in inputs
+                ]
+                init_inputs = [
+                    x.to(device=device, dtype=precision_dtype) if isinstance(x, torch.Tensor) else x
+                    for x in init_inputs
+                ]
 
-            # convert all precision so torch compile can target specific dtype
-            if use_torch_compile:
-                torch._dynamo.reset() # reset torch dynamo cache (clear memory and reset graph)
-                print(
-                    f"Using torch.compile to compile model {ref_arch_name} with {torch_compile_backend} backend and {torch_compile_options} mode"
-                )
-                # NOTE: torch compile uses lazy compilation (triggered by first forward pass)
-                # the warmup in the timing function handles that and should not affect timed trials
-                model = torch.compile(
+                model = Model(*init_inputs)
+                model = model.to(device=device, dtype=precision_dtype)
+
+                # convert all precision so torch compile can target specific dtype
+                if use_torch_compile:
+                    torch._dynamo.reset()  # clear graph cache between tasks
+                    print(
+                        f"Using torch.compile to compile model {ref_arch_name} with {torch_compile_backend} backend and {torch_compile_options} mode"
+                    )
+                    # NOTE: torch compile uses lazy compilation (triggered by first forward pass)
+                    model = torch.compile(
+                        model,
+                        backend=torch_compile_backend,
+                        mode=torch_compile_options,
+                    )
+                else:
+                    print(f"Using PyTorch Eager Execution on {ref_arch_name}")
+
+                torch.cuda.synchronize(device=device)
+
+                timing_fn = get_timing_function(timing_method)
+                elapsed_times = timing_fn(
                     model,
-                    backend=torch_compile_backend,
-                    mode=torch_compile_options,
+                    inputs,
+                    num_warmup=attempt_warmup,
+                    num_trials=attempt_trials,
+                    discard_first=discard_first,
+                    verbose=verbose,
+                    device=device,
                 )
-            else:
-                print(f"Using PyTorch Eager Execution on {ref_arch_name}")
+                runtime_stats = get_timing_stats(elapsed_times, device=device)
 
-            torch.cuda.synchronize(device=device)
+                if verbose:
+                    print(f"{ref_arch_name} {runtime_stats}")
+                if attempt_idx > 0:
+                    print(
+                        f"[Eval] Recovered after OOM on attempt {attempt_idx + 1} with "
+                        f"warmup={attempt_warmup}, trials={attempt_trials}"
+                    )
+                return runtime_stats
 
-            timing_fn = get_timing_function(timing_method)
-            elapsed_times = timing_fn(
-                model,
-                inputs,
-                num_warmup=num_warmup,
-                num_trials=num_trials,
-                discard_first=discard_first,
-                verbose=verbose,
-                device=device,
+        except torch.OutOfMemoryError as e:
+            print(
+                f"[Eval] OOM while measuring {ref_arch_name} "
+                f"(attempt {attempt_idx + 1}/{len(attempt_budgets)}): {e}"
             )
-            runtime_stats = get_timing_stats(elapsed_times, device=device)
-
-            if verbose:
-                print(f"{ref_arch_name} {runtime_stats}")
-
-            return runtime_stats
-    except Exception as e:
-        print(f"[Eval] Error in Measuring Performance: {e}")
-        return None
+            if attempt_idx == len(attempt_budgets) - 1:
+                return None
+        except Exception as e:
+            print(f"[Eval] Error in Measuring Performance: {e}")
+            return None
+        finally:
+            # Explicitly drop references before emptying allocator cache.
+            del model, inputs, init_inputs
+            _cleanup_cuda_after_timing(device)
 
 
 def measure_program_time(*args, **kwargs):
@@ -618,4 +659,3 @@ def get_timing_stats(elapsed_times: list[float], device: torch.device = None) ->
         stats["device"] = str(device)  # for debugging
 
     return stats
-

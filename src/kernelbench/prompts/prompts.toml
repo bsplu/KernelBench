@@ -139,6 +139,221 @@ Custom prompt intro goes here. You can reference {backend_display} or any
 other placeholder supported in the shared context.
 """
 
+compile_guardrails = """
+Build constraints (must follow):
+- Output one runnable Python code block only.
+- Use `torch.utils.cpp_extension.load_inline` with PyTorch 2.x-compatible arguments.
+- Use C++17+ only (never C++11/C++14).
+- Keep flags separated: host flags in `extra_cflags`, CUDA-only flags in `extra_cuda_cflags`.
+- If `functions=[...]` is used, keep `cpp_sources` non-empty and declare every exported function there.
+- Do not use `PYBIND11_MODULE` in generated code; rely on `load_inline(..., functions=[...])` binding.
+- Include required headers for APIs you call (e.g., `ATen/cuda/CUDAContext.h` for `at::cuda::getCurrentCUDAStream`).
+- Preserve `ModelNew` I/O contract and requested precision behavior.
+"""
+
+correctness_priority_guardrails = """
+Correctness-first policy:
+- First match reference semantics exactly; optimize only after semantic equivalence is clear.
+- If uncertain, choose the simpler and safer implementation.
+- Keep numeric behavior stable for {precision_display}; avoid unnecessary precision downgrade or risky casts.
+- In `cuda_sources`/source code, include concise algorithm comments for key indexing, boundary handling, and reduction logic to improve correctness and maintainability.
+- `TORCH_CHECK(...)` is a C++ macro: use it only inside `cpp_sources`/`cuda_sources`, never in Python `forward` or other Python runtime paths.
+"""
+
+relaxed_guardrails = """
+Relaxed complexity fallback policy (for larger architectures):
+- Keep model semantics as close as possible to the reference; correctness is the first priority.
+- You are allowed to optimize only one small, low-risk sub-operation.
+- Keep most of the model in standard PyTorch layers; avoid broad rewrites across many blocks.
+- Prefer local pointwise/reduction substitutions over attention/RNN/convolution macro-fusions.
+- If uncertain about shape/layout correctness, keep the original logic unchanged.
+- Compile-stability rules (strict):
+  - Keep CUDA keywords/types (`__global__`, `dim3`, kernel launches) only in `cuda_sources`; keep `cpp_sources` as declarations/wrappers only.
+  - Always include minimal required headers in `cuda_sources`: `#include <torch/extension.h>` and `#include <cuda_runtime.h>`.
+  - Avoid using `C10_CUDA_KERNEL_LAUNCH_CHECK` unless its required header is included; safer fallback is `cudaError_t err = cudaGetLastError(); TORCH_CHECK(err == cudaSuccess, cudaGetErrorString(err));`.
+- Ensure every launched kernel/function is declared before use, and every launch variable (`threads`, `blocks`, etc.) is defined in-scope before launch.
+- Keep `functions=[...]` exactly aligned with symbols declared in `cpp_sources`; do not reference undeclared exported names.
+- Prefer one simple custom op and one extension module name; avoid generating many fused ops in one file.
+- Semantic guardrails (strict):
+  - Do NOT change `__init__` parameter initialization path or random init behavior of the reference model; preserve layer construction and parameter init semantics.
+  - Do NOT change `forward` signature (argument list, optional defaults) or return contract (shape/structure/meaning) relative to the reference model.
+  - For shape transforms, avoid `view(...)` on potentially non-contiguous tensors; use `x = x.contiguous().view(...)` or `reshape(...)` when layout may be non-contiguous.
+"""
+
+code_template = """
+Use this minimal structure (adapt signatures and logic to the task):
+
+```python
+import torch
+import torch.nn as nn
+from torch.utils.cpp_extension import load_inline
+
+cuda_source = r'''
+#include <torch/extension.h>
+#include <cuda_runtime.h>
+// add other required headers only if needed
+
+torch::Tensor custom_op_cuda(torch::Tensor x /*, ... */) {{
+    // TORCH_CHECK(...)
+    // launch kernel(s)
+    // C10_CUDA_KERNEL_LAUNCH_CHECK();
+    return x;
+}}
+'''
+
+cpp_source = r'''
+#include <torch/extension.h>
+torch::Tensor custom_op_cuda(torch::Tensor x /*, ... */);
+'''
+
+ext = load_inline(
+    name="custom_extension",
+    cpp_sources=cpp_source,  # must be non-empty when using functions=[...]
+    cuda_sources=cuda_source,
+    functions=["custom_op_cuda"],
+    verbose=False,
+    extra_cflags=["-O3", "-std=c++17"],
+    extra_cuda_cflags=["-O3", "--use_fast_math", "-lineinfo", "-maxrregcount=64", "-std=c++17"],
+)
+
+class ModelNew(nn.Module):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        # keep required state/init from reference
+
+    def forward(self, x, *args, **kwargs):
+        # preserve reference I/O contract and semantics
+        # return ext.custom_op_cuda(...)
+        return x
+```
+
+Output requirements:
+- Class name must be `ModelNew`.
+- Keep `cpp_sources` declarations aligned with `functions=[...]`.
+- Do not define `PYBIND11_MODULE` when using `load_inline(..., functions=[...])`.
+- Keep reference semantics and {precision_display} behavior.
+"""
+
+self_review_template = """
+You are reviewing generated {backend_display} extension code for torch kernel implementations.
+
+Goal: return corrected code that compiles and matches reference behavior.
+
+Review checklist (all required):
+1) Compile/API pass:
+- Fix syntax/import/name/header issues.
+- Ensure the custom CUDA code is syntactically valid CUDA/C++ source (balanced braces, valid kernel/function signatures, complete declarations, required semicolons/includes).
+- Keep C++17+, valid `load_inline` args, and correct host/CUDA flag separation.
+- Critical wiring rule: if `functions=[...]` is used, `cpp_sources` must be non-empty and declare every exported symbol.
+- `PYBIND11_MODULE` is forbidden in this setup; use `load_inline(..., functions=[...])` only to avoid binding/redefinition compile errors.
+- Do not emit `TORCH_CHECK(...)` in Python code; it must stay in C++/CUDA sources only, otherwise runtime raises `NameError`.
+- Add essential wrapper checks (`TORCH_CHECK`, dtype/device/shape checks, launch error check).
+- Avoid bypass hacks (PyTorch wrapping fallback, try/except bypass, inheritance bypass).
+
+2) Semantic pass:
+- Keep `ModelNew` interface identical to reference.
+- Preserve output semantics exactly (shape, dtype, device, masks/layout).
+- Run an explicit shape-formula audit before finalizing code.
+- Check dimension ordering explicitly.
+- For fused kernels, verify every fused stage preserves the original intermediate semantics (broadcasting, reduction axis, keepdim behavior).
+- Verify indexing, boundary guards, tile coverage, and reduction completeness.
+- If unsure, prefer conservative-correct logic over aggressive optimization.
+
+3) Internal validation pass (do not output tests):
+- Mentally dry-run tiny + odd/tail shapes and boundary tiles.
+- Include at least one odd-size case where dimensions are not divisible by stride/tile (e.g., 126/127/254/255 patterns) and confirm output shape exactly matches formula.
+- Re-check numerical behavior under {precision_display}.
+- Only output final code after all checks pass.
+
+Output format constraints:
+- Keep class name ModelNew.
+- Return only one complete Python code block, no extra prose.
+- Respect requested precision target: {precision_display}.
+
+Reference architecture:
+```python
+{ref_arch_src}
+```
+
+Candidate code:
+```python
+{candidate_code}
+```
+"""
+
+self_review_feedback_template = """
+You are reviewing generated {backend_display} extension code for torch kernel implementations.
+
+Task:
+- Analyze the candidate code potentially errors.
+- Return a concise fix plan only.
+
+Output format (strict):
+1) Summary: one short paragraph.
+2) Blocking issues: numbered list with concrete file/code-level issues.
+3) Fix plan: numbered, actionable edits (what to change and why).
+4) Risk checks: numbered list of shape/semantic checks to verify after rewrite.
+
+Constraints:
+- Do NOT output any code block.
+- Focus on grammatical correctness first, then value correctness.
+- Explicitly check for:
+  - shape formula mistakes (padding/stride/dilation/output_padding/pooling ceil_mode),
+  - tensor layout/order mistakes (N,C,(D),H,W),
+  - `load_inline` wiring mistakes (`functions=[...]` with empty/missing `cpp_sources`),
+  - misuse of `TORCH_CHECK` in Python runtime code.
+
+Reference architecture:
+```python
+{ref_arch_src}
+```
+
+Candidate code:
+```python
+{candidate_code}
+```
+"""
+
+self_review_rewrite_template = """
+You are rewriting generated {backend_display} extension code using a prior review report.
+
+Goal:
+- Produce corrected code that compiles and matches reference semantics.
+
+Instructions:
+- Apply the review feedback concretely.
+- Keep `ModelNew` interface compatible with the reference task.
+- Keep compile-safe constraints:
+  - C++17+,
+  - `load_inline(..., functions=[...])` requires non-empty `cpp_sources` declarations,
+  - no `PYBIND11_MODULE`,
+  - no `TORCH_CHECK(...)` in Python runtime code (only in C++/CUDA sources).
+- Prioritize correctness over aggressive optimization.
+
+Output format:
+- Return only one complete Python code block, no extra text.
+
+Reference architecture:
+```python
+{ref_arch_src}
+```
+
+Original task prompt:
+```text
+{original_task_prompt}
+```
+
+Review feedback:
+```text
+{review_feedback}
+```
+
+Candidate code to rewrite:
+```python
+{candidate_code}
+```
+"""
+
 
 # -------------------------------------------------------------------------
 # Hardware Templates: GPU-specific information blocks
@@ -215,5 +430,22 @@ components = [
     "arch_block",
     "precision_note",
     "examples_block",
+    "instruction",
+]
+
+[custom_prompts.compile_safe]
+# A stricter prompt variant prioritizing compile compatibility and runnable outputs.
+components = [
+    "problem_statement",
+    "hardware_header",
+    "hardware_specs",
+    "hardware_best_practices",
+    "examples_block",
+    "arch_block",
+    "precision_note",
+    "compile_guardrails",
+    "correctness_priority_guardrails",
+    "relaxed_guardrails",
+    "code_template",
     "instruction",
 ]

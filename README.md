@@ -146,6 +146,59 @@ uv run python scripts/eval_from_generations.py run_name=test_hf_level_1 dataset_
 # add build_cache=True and num_cpu_workers=<num_cpu_workers> to the command
 ```
 
+### Easy Use Scripts
+For common workflows, we provide shell wrappers under `scripts/` so you can run end-to-end without typing long commands.
+
+#### `scripts/run_inf.sh`
+- Purpose: batch generation (inference only) for configured levels/samples.
+- Output: generated kernels under `runs/<run_name>/..._kernel.py`.
+
+```bash
+bash scripts/run_inf.sh
+```
+
+#### `scripts/run_eval.sh`
+- Purpose: evaluate generated kernels from `runs/<run_name>` (compilation, correctness, runtime).
+- Output: `runs/<run_name>/eval_results*.json`.
+
+```bash
+bash scripts/run_eval.sh
+```
+
+Common overrides:
+- `PYTHON_BIN=/path/to/python`
+- `NUM_GPU_DEVICES=1`
+- `TIMEOUT=300`
+- `BACKEND=cuda`
+- `PRECISION=fp32`
+
+Example:
+```bash
+PYTHON_BIN=/path/to/python NUM_GPU_DEVICES=1 TIMEOUT=300 bash scripts/run_eval.sh
+```
+
+#### `scripts/run_baseline.sh`
+- Purpose: measure PyTorch baseline timing on your current hardware for later speedup analysis.
+- Output: `results/timing/<HARDWARE>/<BASELINE_NAME>.json`.
+
+```bash
+bash scripts/run_baseline.sh
+```
+
+Common overrides:
+- `HARDWARE=A5000`
+- `PRECISION=fp32`
+- `BASELINE_NAME=baseline_time_torch`
+- `USE_TORCH_COMPILE=0|1`
+
+#### `scripts/run_analysis.sh`
+- Purpose: summarize eval results and compute benchmark metrics (including fast_p) against a baseline.
+- Output: analysis JSON (default under the run directory unless overridden).
+
+```bash
+RUN_NAME=dsv32_L1_S1 LEVEL=1 HARDWARE=A5000 BASELINE=baseline_time_torch bash scripts/run_analysis.sh
+```
+
 ### Decouple Inference and Evaluation (Two-Machine Workflow)
 If you want to run inference on one machine and evaluate on another:
 

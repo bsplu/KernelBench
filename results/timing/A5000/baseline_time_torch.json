@@ -1,0 +1,2250 @@
+{
+    "level1": {
+        "1_Square_matrix_multiplication_.py": {
+            "mean": 7.55,
+            "std": 0.0731,
+            "min": 7.16,
+            "max": 7.83,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "2_Standard_matrix_multiplication_.py": {
+            "mean": 7.59,
+            "std": 0.0433,
+            "min": 7.41,
+            "max": 7.66,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "3_Batched_matrix_multiplication.py": {
+            "mean": 18.8,
+            "std": 0.0902,
+            "min": 18.6,
+            "max": 19.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "4_Matrix_vector_multiplication_.py": {
+            "mean": 14.3,
+            "std": 0.652,
+            "min": 13.9,
+            "max": 18.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "5_Matrix_scalar_multiplication.py": {
+            "mean": 12.6,
+            "std": 0.256,
+            "min": 12.6,
+            "max": 14.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "6_Matmul_with_large_K_dimension_.py": {
+            "mean": 6.36,
+            "std": 0.0656,
+            "min": 6.26,
+            "max": 6.58,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "7_Matmul_with_small_K_dimension_.py": {
+            "mean": 12.2,
+            "std": 0.416,
+            "min": 11.7,
+            "max": 14.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "8_Matmul_with_irregular_shapes_.py": {
+            "mean": 18.6,
+            "std": 0.033,
+            "min": 18.6,
+            "max": 18.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "9_Tall_skinny_matrix_multiplication_.py": {
+            "mean": 10.6,
+            "std": 0.317,
+            "min": 9.96,
+            "max": 12.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "10_3D_tensor_matrix_multiplication.py": {
+            "mean": 3.26,
+            "std": 0.119,
+            "min": 2.91,
+            "max": 3.31,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "11_4D_tensor_matrix_multiplication.py": {
+            "mean": 25.8,
+            "std": 0.0979,
+            "min": 25.8,
+            "max": 26.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "12_Matmul_with_diagonal_matrices_.py": {
+            "mean": 0.212,
+            "std": 0.000567,
+            "min": 0.211,
+            "max": 0.213,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "13_Matmul_for_symmetric_matrices.py": {
+            "mean": 7.55,
+            "std": 0.0354,
+            "min": 7.53,
+            "max": 7.62,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "14_Matmul_for_upper_triangular_matrices.py": {
+            "mean": 6.98,
+            "std": 0.038,
+            "min": 6.76,
+            "max": 7.02,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "15_Matmul_for_lower_triangular_matrices.py": {
+            "mean": 6.99,
+            "std": 0.0386,
+            "min": 6.96,
+            "max": 7.08,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "16_Matmul_with_transposed_A.py": {
+            "mean": 7.48,
+            "std": 0.0247,
+            "min": 7.37,
+            "max": 7.53,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "17_Matmul_with_transposed_B.py": {
+            "mean": 10.3,
+            "std": 0.128,
+            "min": 10.1,
+            "max": 10.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "18_Matmul_with_transposed_both.py": {
+            "mean": 7.68,
+            "std": 0.0494,
+            "min": 7.65,
+            "max": 7.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "19_ReLU.py": {
+            "mean": 20.2,
+            "std": 13.0,
+            "min": 18.8,
+            "max": 150.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "20_LeakyReLU.py": {
+            "mean": 20.2,
+            "std": 13.1,
+            "min": 18.8,
+            "max": 151.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "21_Sigmoid.py": {
+            "mean": 20.2,
+            "std": 13.3,
+            "min": 18.8,
+            "max": 152.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "22_Tanh.py": {
+            "mean": 20.2,
+            "std": 13.6,
+            "min": 18.8,
+            "max": 156.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "23_Softmax.py": {
+            "mean": 38.0,
+            "std": 11.4,
+            "min": 36.8,
+            "max": 152.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "24_LogSoftmax.py": {
+            "mean": 38.0,
+            "std": 11.4,
+            "min": 36.8,
+            "max": 152.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "25_Swish.py": {
+            "mean": 10.5,
+            "std": 0.0767,
+            "min": 10.5,
+            "max": 10.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA H100 80GB HBM3",
+            "device": "cuda:0"
+        },
+        "26_GELU_.py": {
+            "mean": 20.2,
+            "std": 13.7,
+            "min": 18.8,
+            "max": 157.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "27_SELU_.py": {
+            "mean": 20.2,
+            "std": 13.8,
+            "min": 18.8,
+            "max": 157.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "28_HardSigmoid.py": {
+            "mean": 20.2,
+            "std": 13.5,
+            "min": 18.8,
+            "max": 155.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "29_Softplus.py": {
+            "mean": 20.3,
+            "std": 14.3,
+            "min": 18.9,
+            "max": 163.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "30_Softsign.py": {
+            "mean": 14.8,
+            "std": 0.0927,
+            "min": 14.7,
+            "max": 15.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA H100 80GB HBM3",
+            "device": "cuda:0"
+        },
+        "31_ELU.py": {
+            "mean": 20.2,
+            "std": 13.6,
+            "min": 18.8,
+            "max": 155.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "32_HardTanh.py": {
+            "mean": 20.2,
+            "std": 13.2,
+            "min": 18.8,
+            "max": 152.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "33_BatchNorm.py": {
+            "mean": 19.8,
+            "std": 0.593,
+            "min": 19.2,
+            "max": 21.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "34_InstanceNorm.py": {
+            "mean": 34.8,
+            "std": 15.1,
+            "min": 33.0,
+            "max": 185.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "35_GroupNorm_.py": {
+            "mean": 34.9,
+            "std": 15.1,
+            "min": 33.1,
+            "max": 185.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "36_RMSNorm_.py": {
+            "mean": 58.3,
+            "std": 12.8,
+            "min": 56.7,
+            "max": 186.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "37_FrobeniusNorm_.py": {
+            "mean": 33.7,
+            "std": 14.4,
+            "min": 32.2,
+            "max": 177.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "38_L1Norm_.py": {
+            "mean": 15.6,
+            "std": 0.275,
+            "min": 15.5,
+            "max": 17.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA H100 80GB HBM3",
+            "device": "cuda:0"
+        },
+        "39_L2Norm_.py": {
+            "mean": 10.1,
+            "std": 0.185,
+            "min": 10.0,
+            "max": 11.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA H100 80GB HBM3",
+            "device": "cuda:0"
+        },
+        "40_LayerNorm.py": {
+            "mean": 7.46,
+            "std": 0.0522,
+            "min": 7.36,
+            "max": 7.54,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "41_Max_Pooling_1D.py": {
+            "mean": 29.1,
+            "std": 20.6,
+            "min": 24.6,
+            "max": 234.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "42_Max_Pooling_2D.py": {
+            "mean": 27.0,
+            "std": 0.269,
+            "min": 26.7,
+            "max": 28.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "43_Max_Pooling_3D.py": {
+            "mean": 11.5,
+            "std": 0.477,
+            "min": 11.0,
+            "max": 14.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "44_Average_Pooling_1D.py": {
+            "mean": 18.0,
+            "std": 0.196,
+            "min": 17.7,
+            "max": 19.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "45_Average_Pooling_2D.py": {
+            "mean": 25.1,
+            "std": 0.188,
+            "min": 24.8,
+            "max": 25.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "46_Average_Pooling_3D.py": {
+            "mean": 21.2,
+            "std": 0.827,
+            "min": 20.3,
+            "max": 25.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "47_Sum_reduction_over_a_dimension.py": {
+            "mean": 12.6,
+            "std": 0.0342,
+            "min": 12.6,
+            "max": 13.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "48_Mean_reduction_over_a_dimension.py": {
+            "mean": 12.6,
+            "std": 0.0186,
+            "min": 12.6,
+            "max": 12.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "49_Max_reduction_over_a_dimension.py": {
+            "mean": 12.7,
+            "std": 0.0133,
+            "min": 12.6,
+            "max": 12.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "50_conv_standard_2D__square_input__square_kernel.py": {
+            "mean": 6.18,
+            "std": 0.0987,
+            "min": 5.87,
+            "max": 6.89,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "51_Argmax_over_a_dimension.py": {
+            "mean": 12.7,
+            "std": 0.0475,
+            "min": 12.6,
+            "max": 13.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "52_Argmin_over_a_dimension.py": {
+            "mean": 12.7,
+            "std": 0.0429,
+            "min": 12.6,
+            "max": 13.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "53_Min_reduction_over_a_dimension.py": {
+            "mean": 12.7,
+            "std": 0.0348,
+            "min": 12.6,
+            "max": 13.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "54_conv_standard_3D__square_input__square_kernel.py": {
+            "mean": 7.71,
+            "std": 0.124,
+            "min": 7.44,
+            "max": 8.81,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "55_conv_standard_2D__asymmetric_input__square_kernel.py": {
+            "mean": 18.8,
+            "std": 0.388,
+            "min": 18.3,
+            "max": 20.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "56_conv_standard_2D__asymmetric_input__asymmetric_kernel.py": {
+            "mean": 17.0,
+            "std": 0.131,
+            "min": 16.8,
+            "max": 17.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "57_conv_transposed_2D__square_input__square_kernel.py": {
+            "mean": 30.3,
+            "std": 0.308,
+            "min": 29.9,
+            "max": 32.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "58_conv_transposed_3D__asymmetric_input__asymmetric_kernel.py": {
+            "mean": 20.0,
+            "std": 0.116,
+            "min": 19.9,
+            "max": 20.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "59_conv_standard_3D__asymmetric_input__square_kernel.py": {
+            "mean": 106.0,
+            "std": 0.462,
+            "min": 105.0,
+            "max": 107.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "60_conv_standard_3D__square_input__asymmetric_kernel.py": {
+            "mean": 11.0,
+            "std": 0.12,
+            "min": 10.8,
+            "max": 12.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "61_conv_transposed_3D__square_input__square_kernel.py": {
+            "mean": 18.8,
+            "std": 0.248,
+            "min": 18.4,
+            "max": 19.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "62_conv_standard_2D__square_input__asymmetric_kernel.py": {
+            "mean": 12.1,
+            "std": 0.155,
+            "min": 12.0,
+            "max": 13.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "63_conv_standard_2D__square_input__square_kernel.py": {
+            "mean": 61.2,
+            "std": 16.5,
+            "min": 58.9,
+            "max": 225.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "64_conv_transposed_1D.py": {
+            "mean": 23.8,
+            "std": 0.257,
+            "min": 23.6,
+            "max": 25.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "65_conv_transposed_2D__square_input__asymmetric_kernel.py": {
+            "mean": 12.3,
+            "std": 0.173,
+            "min": 12.0,
+            "max": 13.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "66_conv_standard_3D__asymmetric_input__asymmetric_kernel.py": {
+            "mean": 5.41,
+            "std": 0.0707,
+            "min": 5.11,
+            "max": 5.87,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "67_conv_standard_1D.py": {
+            "mean": 9.76,
+            "std": 0.398,
+            "min": 9.09,
+            "max": 11.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "68_conv_transposed_3D__square_input__asymmetric_kernel.py": {
+            "mean": 462.0,
+            "std": 1.51,
+            "min": 458.0,
+            "max": 464.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "69_conv_transposed_2D__asymmetric_input__asymmetric_kernel.py": {
+            "mean": 17.4,
+            "std": 0.28,
+            "min": 17.2,
+            "max": 18.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "70_conv_transposed_3D__asymmetric_input__square_kernel.py": {
+            "mean": 59.3,
+            "std": 0.242,
+            "min": 59.0,
+            "max": 60.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "71_conv_transposed_2D__asymmetric_input__square_kernel.py": {
+            "mean": 8.06,
+            "std": 0.127,
+            "min": 7.93,
+            "max": 9.03,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "72_conv_transposed_3D_asymmetric_input_asymmetric_kernel___strided_padded_grouped_.py": {
+            "mean": 6.2,
+            "std": 0.0447,
+            "min": 6.0,
+            "max": 6.48,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "73_conv_transposed_3D_asymmetric_input_square_kernel__strided_padded__grouped.py": {
+            "mean": 14.9,
+            "std": 0.166,
+            "min": 14.5,
+            "max": 16.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "74_conv_transposed_1D_dilated.py": {
+            "mean": 9.04,
+            "std": 0.134,
+            "min": 8.95,
+            "max": 10.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "75_conv_transposed_2D_asymmetric_input_asymmetric_kernel_strided__grouped____padded____dilated__.py": {
+            "mean": 14.5,
+            "std": 0.2,
+            "min": 14.4,
+            "max": 16.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "76_conv_standard_1D_dilated_strided__.py": {
+            "mean": 51.0,
+            "std": 10.7,
+            "min": 49.1,
+            "max": 157.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "77_conv_transposed_3D_square_input_square_kernel___padded____dilated____strided__.py": {
+            "mean": 4.56,
+            "std": 0.138,
+            "min": 4.45,
+            "max": 5.87,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "78_conv_transposed_2D_asymmetric_input_asymmetric_kernel___padded__.py": {
+            "mean": 17.8,
+            "std": 0.213,
+            "min": 17.4,
+            "max": 18.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "79_conv_transposed_1D_asymmetric_input_square_kernel___padded____strided____dilated__.py": {
+            "mean": 7.81,
+            "std": 0.131,
+            "min": 7.77,
+            "max": 8.98,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "80_conv_standard_2D_square_input_asymmetric_kernel___dilated____padded__.py": {
+            "mean": 12.0,
+            "std": 0.136,
+            "min": 11.8,
+            "max": 12.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "81_conv_transposed_2D_asymmetric_input_square_kernel___dilated____padded____strided__.py": {
+            "mean": 3.86,
+            "std": 0.102,
+            "min": 3.82,
+            "max": 4.84,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "82_conv_depthwise_2D_square_input_square_kernel.py": {
+            "mean": 7.95,
+            "std": 0.162,
+            "min": 7.72,
+            "max": 8.98,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "83_conv_depthwise_2D_square_input_asymmetric_kernel.py": {
+            "mean": 4.54,
+            "std": 0.154,
+            "min": 4.46,
+            "max": 6.07,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "84_conv_depthwise_2D_asymmetric_input_square_kernel.py": {
+            "mean": 31.9,
+            "std": 0.403,
+            "min": 31.6,
+            "max": 34.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "85_conv_depthwise_2D_asymmetric_input_asymmetric_kernel.py": {
+            "mean": 6.91,
+            "std": 0.11,
+            "min": 6.79,
+            "max": 7.98,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "86_conv_depthwise_separable_2D.py": {
+            "mean": 12.9,
+            "std": 0.14,
+            "min": 12.7,
+            "max": 13.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "87_conv_pointwise_2D.py": {
+            "mean": 20.9,
+            "std": 19.3,
+            "min": 18.8,
+            "max": 213.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "88_MinGPTNewGelu.py": {
+            "mean": 7.16,
+            "std": 0.174,
+            "min": 7.07,
+            "max": 7.55,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "89_cumsum.py": {
+            "mean": 15.1,
+            "std": 0.235,
+            "min": 14.9,
+            "max": 16.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "90_cumprod.py": {
+            "mean": 14.9,
+            "std": 0.211,
+            "min": 14.7,
+            "max": 16.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "91_cumsum_reverse.py": {
+            "mean": 41.4,
+            "std": 15.7,
+            "min": 39.6,
+            "max": 198.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "92_cumsum_exclusive.py": {
+            "mean": 43.9,
+            "std": 15.9,
+            "min": 42.2,
+            "max": 202.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "93_masked_cumsum.py": {
+            "mean": 33.4,
+            "std": 0.0419,
+            "min": 33.3,
+            "max": 33.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "94_MSELoss.py": {
+            "mean": 37.4,
+            "std": 0.0134,
+            "min": 37.4,
+            "max": 37.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "95_CrossEntropyLoss.py": null,
+        "96_HuberLoss.py": {
+            "mean": 24.8,
+            "std": 0.0305,
+            "min": 24.8,
+            "max": 25.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "97_ScaledDotProductAttention.py": {
+            "mean": 119.0,
+            "std": 0.81,
+            "min": 116.0,
+            "max": 122.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "98_KLDivLoss.py": {
+            "mean": 17.3,
+            "std": 0.233,
+            "min": 17.2,
+            "max": 18.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "99_TripletMarginLoss.py": {
+            "mean": 18.7,
+            "std": 0.137,
+            "min": 18.7,
+            "max": 20.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "100_HingeLoss.py": {
+            "mean": 43.7,
+            "std": 0.516,
+            "min": 43.5,
+            "max": 46.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        }
+    },
+    "level2": {
+        "1_Conv2D_ReLU_BiasAdd.py": {
+            "mean": 17.7,
+            "std": 0.146,
+            "min": 17.5,
+            "max": 18.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "2_ConvTranspose2d_BiasAdd_Clamp_Scaling_Clamp_Divide.py": {
+            "mean": 53.9,
+            "std": 0.452,
+            "min": 53.6,
+            "max": 58.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "3_ConvTranspose3d_Sum_LayerNorm_AvgPool_GELU.py": {
+            "mean": 32.0,
+            "std": 0.0855,
+            "min": 31.7,
+            "max": 32.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "4_Conv2d_Mish_Mish.py": {
+            "mean": 37.0,
+            "std": 0.255,
+            "min": 36.5,
+            "max": 37.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "5_ConvTranspose2d_Subtract_Tanh.py": {
+            "mean": 43.1,
+            "std": 0.297,
+            "min": 42.7,
+            "max": 45.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "6_Conv3d_Softmax_MaxPool_MaxPool.py": {
+            "mean": 2.69,
+            "std": 0.0437,
+            "min": 2.57,
+            "max": 2.74,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "7_Conv3d_ReLU_LeakyReLU_GELU_Sigmoid_BiasAdd.py": {
+            "mean": 24.0,
+            "std": 0.273,
+            "min": 23.9,
+            "max": 26.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "8_Conv3d_Divide_Max_GlobalAvgPool_BiasAdd_Sum.py": {
+            "mean": 8.13,
+            "std": 0.0899,
+            "min": 7.95,
+            "max": 8.52,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "9_Matmul_Subtract_Multiply_ReLU.py": {
+            "mean": 10.4,
+            "std": 0.0591,
+            "min": 10.2,
+            "max": 10.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "10_ConvTranspose2d_MaxPool_Hardtanh_Mean_Tanh.py": {
+            "mean": 44.5,
+            "std": 0.358,
+            "min": 43.9,
+            "max": 46.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "11_ConvTranspose2d_BatchNorm_Tanh_MaxPool_GroupNorm.py": {
+            "mean": 11.3,
+            "std": 0.114,
+            "min": 11.0,
+            "max": 11.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "12_Gemm_Multiply_LeakyReLU.py": {
+            "mean": 10.4,
+            "std": 0.0589,
+            "min": 10.3,
+            "max": 10.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "13_ConvTranspose3d_Mean_Add_Softmax_Tanh_Scaling.py": {
+            "mean": 41.9,
+            "std": 0.233,
+            "min": 41.6,
+            "max": 42.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "14_Gemm_Divide_Sum_Scaling.py": {
+            "mean": 10.6,
+            "std": 0.0662,
+            "min": 10.6,
+            "max": 10.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "15_ConvTranspose3d_BatchNorm_Subtract.py": {
+            "mean": 6.06,
+            "std": 0.0647,
+            "min": 6.01,
+            "max": 6.67,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "16_ConvTranspose2d_Mish_Add_Hardtanh_Scaling.py": {
+            "mean": 48.1,
+            "std": 0.304,
+            "min": 47.9,
+            "max": 51.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "17_Conv2d_InstanceNorm_Divide.py": {
+            "mean": 19.6,
+            "std": 0.311,
+            "min": 19.3,
+            "max": 21.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "18_Matmul_Sum_Max_AvgPool_LogSumExp_LogSumExp.py": {
+            "mean": 10.3,
+            "std": 0.0658,
+            "min": 10.1,
+            "max": 10.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "19_ConvTranspose2d_GELU_GroupNorm.py": {
+            "mean": 53.1,
+            "std": 0.447,
+            "min": 52.6,
+            "max": 56.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "20_ConvTranspose3d_Sum_ResidualAdd_Multiply_ResidualAdd.py": {
+            "mean": 16.3,
+            "std": 0.274,
+            "min": 16.1,
+            "max": 17.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "21_Conv2d_Add_Scale_Sigmoid_GroupNorm.py": {
+            "mean": 21.0,
+            "std": 0.132,
+            "min": 20.9,
+            "max": 21.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "22_Matmul_Scale_ResidualAdd_Clamp_LogSumExp_Mish.py": {
+            "mean": 10.7,
+            "std": 0.0756,
+            "min": 10.6,
+            "max": 11.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "23_Conv3d_GroupNorm_Mean.py": {
+            "mean": 4.58,
+            "std": 0.0347,
+            "min": 4.43,
+            "max": 4.61,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "24_Conv3d_Min_Softmax.py": {
+            "mean": 3.57,
+            "std": 0.049,
+            "min": 3.36,
+            "max": 3.59,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "25_Conv2d_Min_Tanh_Tanh.py": {
+            "mean": 23.7,
+            "std": 0.269,
+            "min": 23.2,
+            "max": 25.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "26_ConvTranspose3d_Add_HardSwish.py": {
+            "mean": 24.4,
+            "std": 0.157,
+            "min": 24.3,
+            "max": 25.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "27_Conv3d_HardSwish_GroupNorm_Mean.py": {
+            "mean": 19.7,
+            "std": 0.198,
+            "min": 19.5,
+            "max": 20.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "28_BMM_InstanceNorm_Sum_ResidualAdd_Multiply.py": {
+            "mean": 10.6,
+            "std": 0.0538,
+            "min": 10.6,
+            "max": 10.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "29_Matmul_Mish_Mish.py": {
+            "mean": 10.4,
+            "std": 0.0801,
+            "min": 10.2,
+            "max": 10.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "30_Gemm_GroupNorm_Hardtanh.py": {
+            "mean": 10.7,
+            "std": 0.0658,
+            "min": 10.7,
+            "max": 10.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "31_Conv2d_Min_Add_Multiply.py": {
+            "mean": 20.8,
+            "std": 0.234,
+            "min": 20.7,
+            "max": 22.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "32_Conv2d_Scaling_Min.py": {
+            "mean": 33.9,
+            "std": 0.388,
+            "min": 33.3,
+            "max": 35.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "33_Gemm_Scale_BatchNorm.py": {
+            "mean": 10.4,
+            "std": 0.0685,
+            "min": 10.4,
+            "max": 10.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "34_ConvTranspose3d_LayerNorm_GELU_Scaling.py": {
+            "mean": 83.8,
+            "std": 0.204,
+            "min": 83.3,
+            "max": 84.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "35_Conv2d_Subtract_HardSwish_MaxPool_Mish.py": {
+            "mean": 21.2,
+            "std": 0.191,
+            "min": 21.1,
+            "max": 22.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "36_ConvTranspose2d_Min_Sum_GELU_Add.py": {
+            "mean": 6.28,
+            "std": 0.0349,
+            "min": 6.09,
+            "max": 6.39,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "37_Matmul_Swish_Sum_GroupNorm.py": {
+            "mean": 30.9,
+            "std": 0.386,
+            "min": 30.4,
+            "max": 32.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "38_ConvTranspose3d_AvgPool_Clamp_Softmax_Multiply.py": {
+            "mean": 25.3,
+            "std": 0.133,
+            "min": 25.2,
+            "max": 26.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "39_Gemm_Scale_BatchNorm.py": {
+            "mean": 42.9,
+            "std": 0.0768,
+            "min": 42.9,
+            "max": 43.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "40_Matmul_Scaling_ResidualAdd.py": {
+            "mean": 43.4,
+            "std": 0.0961,
+            "min": 43.2,
+            "max": 43.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "41_Gemm_BatchNorm_GELU_ReLU.py": {
+            "mean": 43.6,
+            "std": 0.15,
+            "min": 43.4,
+            "max": 44.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "42_ConvTranspose2d_GlobalAvgPool_BiasAdd_LogSumExp_Sum_Multiply.py": {
+            "mean": 34.8,
+            "std": 0.203,
+            "min": 34.6,
+            "max": 36.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "43_Conv3d_Max_LogSumExp_ReLU.py": {
+            "mean": 11.6,
+            "std": 0.129,
+            "min": 11.3,
+            "max": 12.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "44_ConvTranspose2d_Multiply_GlobalAvgPool_GlobalAvgPool_Mean.py": {
+            "mean": 7.74,
+            "std": 0.0417,
+            "min": 7.61,
+            "max": 8.05,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "45_Gemm_Sigmoid_LogSumExp.py": {
+            "mean": 32.3,
+            "std": 0.0803,
+            "min": 32.3,
+            "max": 32.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "46_Conv2d_Subtract_Tanh_Subtract_AvgPool.py": {
+            "mean": 23.7,
+            "std": 0.105,
+            "min": 23.5,
+            "max": 24.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "47_Conv3d_Mish_Tanh.py": {
+            "mean": 11.3,
+            "std": 0.0956,
+            "min": 11.2,
+            "max": 11.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "48_Conv3d_Scaling_Tanh_Multiply_Sigmoid.py": {
+            "mean": 12.7,
+            "std": 0.0635,
+            "min": 12.6,
+            "max": 12.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "49_ConvTranspose3d_Softmax_Sigmoid.py": {
+            "mean": 11.1,
+            "std": 0.208,
+            "min": 11.0,
+            "max": 13.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "50_ConvTranspose3d_Scaling_AvgPool_BiasAdd_Scaling.py": {
+            "mean": 34.4,
+            "std": 0.208,
+            "min": 34.0,
+            "max": 35.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "51_Gemm_Subtract_GlobalAvgPool_LogSumExp_GELU_ResidualAdd.py": {
+            "mean": 21.2,
+            "std": 0.0955,
+            "min": 21.2,
+            "max": 21.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "52_Conv2d_Activation_BatchNorm.py": {
+            "mean": 14.1,
+            "std": 0.078,
+            "min": 14.0,
+            "max": 14.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "53_Gemm_Scaling_Hardtanh_GELU.py": {
+            "mean": 21.1,
+            "std": 0.124,
+            "min": 21.0,
+            "max": 21.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "54_Conv2d_Multiply_LeakyReLU_GELU.py": {
+            "mean": 25.7,
+            "std": 0.229,
+            "min": 25.5,
+            "max": 27.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "55_Matmul_MaxPool_Sum_Scale.py": {
+            "mean": 22.5,
+            "std": 0.314,
+            "min": 22.1,
+            "max": 23.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "56_Matmul_Sigmoid_Sum.py": {
+            "mean": 22.4,
+            "std": 0.276,
+            "min": 22.1,
+            "max": 23.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "57_Conv2d_ReLU_HardSwish.py": {
+            "mean": 11.6,
+            "std": 0.072,
+            "min": 11.6,
+            "max": 12.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "58_ConvTranspose3d_LogSumExp_HardSwish_Subtract_Clamp.py": {
+            "mean": 40.2,
+            "std": 0.136,
+            "min": 40.0,
+            "max": 40.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "59_Matmul_Swish_Scaling.py": {
+            "mean": 22.4,
+            "std": 0.402,
+            "min": 22.0,
+            "max": 24.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "60_ConvTranspose3d_Swish_GroupNorm_HardSwish.py": {
+            "mean": 43.9,
+            "std": 0.185,
+            "min": 43.6,
+            "max": 44.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "61_ConvTranspose3d_ReLU_GroupNorm.py": {
+            "mean": 10.1,
+            "std": 0.124,
+            "min": 9.74,
+            "max": 10.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "62_Matmul_GroupNorm_LeakyReLU_Sum.py": {
+            "mean": 11.2,
+            "std": 0.0893,
+            "min": 11.2,
+            "max": 11.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "63_Gemm_ReLU_Divide.py": {
+            "mean": 10.3,
+            "std": 0.0467,
+            "min": 10.3,
+            "max": 10.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "64_Gemm_LogSumExp_LeakyReLU_LeakyReLU_GELU_GELU.py": {
+            "mean": 10.5,
+            "std": 0.0382,
+            "min": 10.3,
+            "max": 10.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "65_Conv2d_AvgPool_Sigmoid_Sum.py": {
+            "mean": 40.3,
+            "std": 0.528,
+            "min": 39.6,
+            "max": 41.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "66_Matmul_Dropout_Softmax.py": {
+            "mean": 5.54,
+            "std": 0.1,
+            "min": 4.71,
+            "max": 5.61,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "67_Conv2d_GELU_GlobalAvgPool.py": {
+            "mean": 22.7,
+            "std": 0.269,
+            "min": 22.4,
+            "max": 24.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "68_Matmul_Min_Subtract.py": {
+            "mean": 5.54,
+            "std": 0.102,
+            "min": 4.71,
+            "max": 5.67,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "69_Conv2d_HardSwish_ReLU.py": {
+            "mean": 6.31,
+            "std": 0.0388,
+            "min": 6.29,
+            "max": 6.58,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "70_Gemm_Sigmoid_Scaling_ResidualAdd.py": {
+            "mean": 10.4,
+            "std": 0.0608,
+            "min": 10.4,
+            "max": 10.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "71_Conv2d_Divide_LeakyReLU.py": {
+            "mean": 6.32,
+            "std": 0.0419,
+            "min": 6.29,
+            "max": 6.62,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "72_ConvTranspose3d_BatchNorm_AvgPool_AvgPool.py": {
+            "mean": 41.4,
+            "std": 0.107,
+            "min": 41.1,
+            "max": 41.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "73_Conv2d_BatchNorm_Scaling.py": {
+            "mean": 8.04,
+            "std": 0.0339,
+            "min": 7.99,
+            "max": 8.31,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "74_ConvTranspose3d_LeakyReLU_Multiply_LeakyReLU_Max.py": {
+            "mean": 6.54,
+            "std": 0.0339,
+            "min": 6.48,
+            "max": 6.77,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "75_Gemm_GroupNorm_Min_BiasAdd.py": {
+            "mean": 11.2,
+            "std": 0.102,
+            "min": 11.1,
+            "max": 11.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "76_Gemm_Add_ReLU.py": {
+            "mean": 10.6,
+            "std": 0.0923,
+            "min": 10.5,
+            "max": 10.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "77_ConvTranspose3d_Scale_BatchNorm_GlobalAvgPool.py": {
+            "mean": 108.0,
+            "std": 0.612,
+            "min": 107.0,
+            "max": 112.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "78_ConvTranspose3d_Max_Max_Sum.py": {
+            "mean": 117.0,
+            "std": 0.576,
+            "min": 116.0,
+            "max": 119.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "79_Conv3d_Multiply_InstanceNorm_Clamp_Multiply_Max.py": {
+            "mean": 3.32,
+            "std": 0.0343,
+            "min": 3.22,
+            "max": 3.34,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "80_Gemm_Max_Subtract_GELU.py": {
+            "mean": 10.3,
+            "std": 0.0615,
+            "min": 10.3,
+            "max": 10.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "81_Gemm_Swish_Divide_Clamp_Tanh_Clamp.py": {
+            "mean": 10.8,
+            "std": 0.068,
+            "min": 10.7,
+            "max": 11.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "82_Conv2d_Tanh_Scaling_BiasAdd_Max.py": {
+            "mean": 35.6,
+            "std": 0.219,
+            "min": 35.4,
+            "max": 37.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "83_Conv3d_GroupNorm_Min_Clamp_Dropout.py": {
+            "mean": 13.6,
+            "std": 0.0596,
+            "min": 13.4,
+            "max": 13.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "84_Gemm_BatchNorm_Scaling_Softmax.py": {
+            "mean": 10.6,
+            "std": 0.0876,
+            "min": 10.5,
+            "max": 10.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "85_Conv2d_GroupNorm_Scale_MaxPool_Clamp.py": {
+            "mean": 8.18,
+            "std": 0.107,
+            "min": 8.1,
+            "max": 8.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "86_Matmul_Divide_GELU.py": {
+            "mean": 10.4,
+            "std": 0.0188,
+            "min": 10.4,
+            "max": 10.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "87_Conv2d_Subtract_Subtract_Mish.py": {
+            "mean": 32.1,
+            "std": 0.212,
+            "min": 31.8,
+            "max": 33.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "88_Gemm_GroupNorm_Swish_Multiply_Swish.py": {
+            "mean": 11.2,
+            "std": 0.0775,
+            "min": 11.0,
+            "max": 11.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "89_ConvTranspose3d_MaxPool_Softmax_Subtract_Swish_Max.py": {
+            "mean": 31.5,
+            "std": 0.145,
+            "min": 31.2,
+            "max": 32.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "90_Conv3d_LeakyReLU_Sum_Clamp_GELU.py": {
+            "mean": 46.2,
+            "std": 0.223,
+            "min": 45.8,
+            "max": 47.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "91_ConvTranspose2d_Softmax_BiasAdd_Scaling_Sigmoid.py": {
+            "mean": 35.1,
+            "std": 0.198,
+            "min": 34.8,
+            "max": 36.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "92_Conv2d_GroupNorm_Tanh_HardSwish_ResidualAdd_LogSumExp.py": {
+            "mean": 15.7,
+            "std": 0.134,
+            "min": 15.6,
+            "max": 16.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "93_ConvTranspose2d_Add_Min_GELU_Multiply.py": {
+            "mean": 23.8,
+            "std": 0.206,
+            "min": 23.7,
+            "max": 25.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "94_Gemm_BiasAdd_Hardtanh_Mish_GroupNorm.py": {
+            "mean": 10.9,
+            "std": 0.102,
+            "min": 10.9,
+            "max": 11.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "95_Matmul_Add_Swish_Tanh_GELU_Hardtanh.py": {
+            "mean": 10.8,
+            "std": 0.0665,
+            "min": 10.7,
+            "max": 11.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "96_ConvTranspose3d_Multiply_Max_GlobalAvgPool_Clamp.py": {
+            "mean": 34.2,
+            "std": 0.217,
+            "min": 33.9,
+            "max": 34.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "97_Matmul_BatchNorm_BiasAdd_Divide_Swish.py": {
+            "mean": 10.8,
+            "std": 0.0823,
+            "min": 10.6,
+            "max": 11.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "98_Matmul_AvgPool_GELU_Scale_Max.py": {
+            "mean": 10.4,
+            "std": 0.0588,
+            "min": 10.3,
+            "max": 10.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "99_Matmul_GELU_Softmax.py": {
+            "mean": 10.5,
+            "std": 0.0517,
+            "min": 10.4,
+            "max": 10.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "100_ConvTranspose3d_Clamp_Min_Divide.py": {
+            "mean": 56.5,
+            "std": 0.399,
+            "min": 56.1,
+            "max": 59.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        }
+    },
+    "level3": {
+        "1_MLP.py": {
+            "mean": 14.0,
+            "std": 0.395,
+            "min": 13.8,
+            "max": 15.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "2_ShallowWideMLP.py": {
+            "mean": 45.3,
+            "std": 0.348,
+            "min": 44.6,
+            "max": 46.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "3_DeepNarrowMLP.py": {
+            "mean": 5.62,
+            "std": 0.051,
+            "min": 5.53,
+            "max": 5.81,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "4_LeNet5.py": {
+            "mean": 1.96,
+            "std": 0.0239,
+            "min": 1.9,
+            "max": 1.97,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "5_AlexNet.py": {
+            "mean": 101.0,
+            "std": 0.366,
+            "min": 100.0,
+            "max": 102.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "6_GoogleNetInceptionModule.py": {
+            "mean": 32.1,
+            "std": 0.269,
+            "min": 31.7,
+            "max": 33.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "7_GoogleNetInceptionV1.py": {
+            "mean": 3.47,
+            "std": 0.0518,
+            "min": 3.26,
+            "max": 3.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "8_ResNetBasicBlock.py": {
+            "mean": 5.21,
+            "std": 0.0205,
+            "min": 5.14,
+            "max": 5.24,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "9_ResNet18.py": {
+            "mean": 1.0,
+            "std": 0.00822,
+            "min": 0.98,
+            "max": 1.01,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "10_ResNet101.py": {
+            "mean": 14.5,
+            "std": 0.0561,
+            "min": 14.3,
+            "max": 14.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "11_VGG16.py": {
+            "mean": 13.9,
+            "std": 0.0997,
+            "min": 13.7,
+            "max": 14.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "12_VGG19.py": {
+            "mean": 16.3,
+            "std": 0.151,
+            "min": 16.1,
+            "max": 17.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "13_DenseNet121TransitionLayer.py": {
+            "mean": 19.3,
+            "std": 0.182,
+            "min": 19.1,
+            "max": 20.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "14_DenseNet121DenseBlock.py": {
+            "mean": 31.7,
+            "std": 0.206,
+            "min": 31.4,
+            "max": 32.4,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "15_DenseNet121.py": {
+            "mean": 11.6,
+            "std": 0.0392,
+            "min": 11.4,
+            "max": 11.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "16_DenseNet201.py": {
+            "mean": 20.0,
+            "std": 0.0679,
+            "min": 19.8,
+            "max": 20.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "17_SqueezeNetFireModule.py": {
+            "mean": 50.8,
+            "std": 0.355,
+            "min": 50.6,
+            "max": 52.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "18_SqueezeNet.py": {
+            "mean": 90.9,
+            "std": 0.206,
+            "min": 90.6,
+            "max": 91.3,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "19_MobileNetV1.py": {
+            "mean": 2.99,
+            "std": 0.015,
+            "min": 2.89,
+            "max": 3.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "20_MobileNetV2.py": {
+            "mean": 3.59,
+            "std": 0.0199,
+            "min": 3.51,
+            "max": 3.62,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "21_EfficientNetMBConv.py": {
+            "mean": 21.3,
+            "std": 0.14,
+            "min": 21.1,
+            "max": 21.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "22_EfficientNetB0.py": {
+            "mean": 3.59,
+            "std": 0.0288,
+            "min": 3.46,
+            "max": 3.62,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "23_EfficientNetB1.py": {
+            "mean": 2.68,
+            "std": 0.0195,
+            "min": 2.61,
+            "max": 2.71,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "24_EfficientNetB2.py": {
+            "mean": 0.754,
+            "std": 0.00182,
+            "min": 0.752,
+            "max": 0.769,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "25_ShuffleNetUnit.py": {
+            "mean": 30.1,
+            "std": 0.131,
+            "min": 30.0,
+            "max": 31.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "26_ShuffleNet.py": {
+            "mean": 28.4,
+            "std": 0.0774,
+            "min": 28.0,
+            "max": 28.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "27_RegNet.py": {
+            "mean": 8.36,
+            "std": 0.0471,
+            "min": 8.23,
+            "max": 8.53,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "28_VisionTransformer.py": {
+            "mean": 2.96,
+            "std": 0.0617,
+            "min": 2.68,
+            "max": 3.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "29_SwinMLP.py": {
+            "mean": 10.7,
+            "std": 0.0617,
+            "min": 10.3,
+            "max": 10.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "30_SwinTransformerV2.py": {
+            "mean": 18.8,
+            "std": 0.0898,
+            "min": 18.4,
+            "max": 19.1,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "31_VisionAttention.py": {
+            "mean": 113.0,
+            "std": 0.279,
+            "min": 112.0,
+            "max": 113.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "32_ConvolutionalVisionTransformer.py": {
+            "mean": 0.494,
+            "std": 0.0223,
+            "min": 0.472,
+            "max": 0.57,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "33_VanillaRNN.py": {
+            "mean": 27.9,
+            "std": 0.341,
+            "min": 27.4,
+            "max": 30.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "34_VanillaRNNHidden.py": {
+            "mean": 6.4,
+            "std": 0.114,
+            "min": 6.3,
+            "max": 7.38,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "35_LSTM.py": {
+            "mean": 12.4,
+            "std": 0.179,
+            "min": 11.8,
+            "max": 12.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "36_LSTMHn.py": {
+            "mean": 12.3,
+            "std": 0.18,
+            "min": 12.0,
+            "max": 12.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "37_LSTMCn.py": {
+            "mean": 12.3,
+            "std": 0.186,
+            "min": 11.7,
+            "max": 12.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "38_LSTMBidirectional.py": {
+            "mean": 33.5,
+            "std": 0.0535,
+            "min": 33.4,
+            "max": 33.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "39_GRU.py": {
+            "mean": 14.6,
+            "std": 0.04,
+            "min": 14.4,
+            "max": 14.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "40_GRUHidden.py": {
+            "mean": 14.5,
+            "std": 0.0458,
+            "min": 14.4,
+            "max": 14.7,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "41_GRUBidirectional.py": {
+            "mean": 38.3,
+            "std": 0.0516,
+            "min": 38.1,
+            "max": 38.5,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "42_GRUBidirectionalHidden.py": {
+            "mean": 38.3,
+            "std": 0.0455,
+            "min": 38.2,
+            "max": 38.6,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "43_MinGPTCausalAttention.py": {
+            "mean": 50.0,
+            "std": 0.381,
+            "min": 49.3,
+            "max": 51.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "44_MiniGPTBlock.py": {
+            "mean": 124.0,
+            "std": 0.686,
+            "min": 123.0,
+            "max": 126.0,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "45_UNetSoftmax.py": {
+            "mean": 20.8,
+            "std": 0.248,
+            "min": 20.3,
+            "max": 22.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "46_NetVladWithGhostClusters.py": {
+            "mean": 5.99,
+            "std": 0.0408,
+            "min": 5.79,
+            "max": 6.02,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "47_NetVladNoGhostClusters.py": {
+            "mean": 5.61,
+            "std": 0.0523,
+            "min": 5.37,
+            "max": 5.64,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "48_Mamba2ReturnY.py": {
+            "mean": 37.1,
+            "std": 0.147,
+            "min": 36.8,
+            "max": 37.9,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "49_Mamba2ReturnFinalState.py": {
+            "mean": 28.5,
+            "std": 0.133,
+            "min": 28.3,
+            "max": 29.2,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        },
+        "50_ReLUSelfAttention.py": {
+            "mean": 19.9,
+            "std": 0.197,
+            "min": 19.8,
+            "max": 20.8,
+            "num_trials": 100,
+            "hardware": "NVIDIA RTX A5000",
+            "device": "cuda:0"
+        }
+    }
+}
